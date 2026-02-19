@@ -117,7 +117,7 @@ def chart_bar_with_target_band(title: str, label: str, value, target_min: float,
 # ================= Card helper =================
 # كرت واحد فيه شارت يسار وتعليق يمين
 def card(title: str, chart_fn, comment_text: str):
-    left, right = st.columns([2, 1])
+    left, right = st.columns([4, 3])
 
     with left:
         st.subheader(title)
