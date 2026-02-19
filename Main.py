@@ -55,7 +55,7 @@ c1, c2 = st.columns(2)
 # زر إضافة يوم جديد
 with c1:
     if st.button("Add day"):
-        st.switch_page("pages/2_Add_Day.py")
+        st.switch_page("pages/2_Add_day.py")
 
 # زر عرض التقرير الأسبوعي
 with c2:
