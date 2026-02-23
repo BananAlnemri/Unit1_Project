@@ -1,11 +1,9 @@
-#Leen,Ibtihal
 #Library :
 import streamlit as st #for streamlit
 from datetime import date, datetime #for allwoing to work with calenar dates directly 
 import plotly.graph_objects as go #for low level,object oriented interface fot=r creating figures 
 from abc import ABC, abstractmethod   # needed for OOP Abstraction
 # ─────────────────────────────────────────────────────────────
-#Raghad
 # Database setup: Save user data 
 
 import json  # used to convert Python data to JSON file
@@ -51,7 +49,7 @@ def save_db(db): # Save Database and writes updated data into database.json
 db = load_db()
 # ─────────────────────────────────────────────────────────────
 # Page Config : setting up specific parameters,layout,metadata for web pag/app interface 
-#Leen 
+
 st.set_page_config( # Streamlit setup basic page settings for the app
 
     page_title="Habby",
@@ -63,8 +61,7 @@ st.set_page_config( # Streamlit setup basic page settings for the app
 
 # ─────────────────────────────────────────────────────────────
 # Session State : to share vairbales between renruns , for each uesr session 
-#Leen 
-#Raghad 
+
 def init_session() : #function creates default values for the session,So every user starts with clean data
 
     defaults = {
@@ -86,8 +83,7 @@ init_session()
 
 # ─────────────────────────────────────────────────────────────
 # Lambda function : the basic quick functions to use on login page 
-#Leen 
-#Banan
+
 validate_email    = lambda email: "@" in email and "." in email.split("@")[-1] #user must use @ when they enter their email
 validate_password = lambda pwd:   len(pwd) >= 6 #the password must be more than 6 characters
 get_avg           = lambda lst:   sum(lst) / len(lst) if lst else 0.0 #get_avg calculates average safely (returns 0 if list is empty)
@@ -95,7 +91,7 @@ get_avg           = lambda lst:   sum(lst) / len(lst) if lst else 0.0 #get_avg c
 
 # ─────────────────────────────────────────────────────────────
 # Helper Function : Basic functions for comparing user data with official studies to extract results on the results page 
-#Leen
+
 #Basic information about human sleep needs based on age
 def get_sleep_recommendation(age: int) :
     if age <= 5:
@@ -109,7 +105,7 @@ def get_sleep_recommendation(age: int) :
     else:
         return {"min": 7,  "max": 8,  "label": "Senior"}
 
-#Basic information about human needs for drinling water based on age
+#Basic information about human needs for drinking water based on age
 def get_water_recommendation(age: int, gender: str) :
 #(1 L ≈ 4 cups)
     g = gender.lower() #The gender is converted to lowercase for comparison.
@@ -334,7 +330,7 @@ def generate_overall_summary(entries: list, user: dict) :
 
 # ─────────────────────────────────────────────────────────────
 # Chart : Graphs chart to display the results of user data analysis and study
-#Leen
+
 #colors palet : 
 PASTEL_COLORS = [
     "#E8A87C",  # peach
@@ -388,7 +384,7 @@ def make_chart(dates: list, values: list, color: str, unit: str):
     )
     return fig
 # ─────────────────────────────────────────────────────────────
-# RAGHAD added
+
 # Sorting helper so browsing works stable :
 
 def sort_entries_by_date(entries: list) -> list:
@@ -398,31 +394,12 @@ def sort_entries_by_date(entries: list) -> list:
         except Exception:
             return datetime.min
     return sorted(entries, key=to_dt)
-
-# ─────────────────────────────────────────────────────────────
-# RAGHAD added
-# Render chart + comment side by side : 
-
-def render_metric_side_by_side(title: str, fig: go.Figure, comment_text: str) -> None:
-    st.markdown(f'<p class="label-sm">{title}</p>', unsafe_allow_html=True)
-
-    col_chart, col_text = st.columns([1.2, 1.0])
-    with col_chart:
-        st.plotly_chart(fig, width="stretch")
-    with col_text:
-        st.markdown(
-            f'<div class="comment-block" style="margin-top:0">{comment_text}</div>',
-            unsafe_allow_html=True,
-        )
-
-
 # ─────────────────────────────────────────────────────────────
 # OOP section : 
-#leen 
 
 # ─────────────────────────────────────────────────────────────
 #ENCAPSULATION 
-#leen
+
 class User:
     
 
@@ -470,7 +447,7 @@ class User:
 
 # ─────────────────────────────────────────────────────────────
 #ABSTRACTION
-#Leen
+
 # HealthMetric acts as a contract 
 class HealthMetric(ABC):
     
@@ -497,7 +474,7 @@ class HealthMetric(ABC):
 
 # ─────────────────────────────────────────────────────────────
 # INHERITANCE + POLYMORPHISM : 
-#leen
+
 # Each class below inherits from HealthMetric and gives its own
 # version of recommendation() and comment().
 
@@ -563,7 +540,7 @@ class HobbyMetric(HealthMetric): #Even 30 min/day of hobbies counts as healthy.
 
 #─────────────────────────────────────────────────────────────
 #Factory function (uses Polymorphism) 
-#leen
+
 #Returns the correct HealthMetric subcl ass for a given key.
 def build_metric(key: str, avg_value: float, user: User) :
     
@@ -582,7 +559,6 @@ def build_metric(key: str, avg_value: float, user: User) :
 
 # ─────────────────────────────────────────────────────────────
 # Global style :
-#leen
 
 def apply_styles() :
     st.markdown("""
@@ -822,7 +798,6 @@ def apply_styles() :
 
 # ─────────────────────────────────────────────────────────────
 # PAGE 1 — "HOME" :
-#Leen #Edited by Banan%Ibtihal%Raghad
 def page_home() : #fun draw home page 
     st.markdown('<div class="display-title">Habby</div>', unsafe_allow_html=True)#display HTML inside Streamlit
     # Short description under title
@@ -855,7 +830,7 @@ def page_home() : #fun draw home page
         ("Hobbies",   "pill-sage"),
         ("Study",     "pill-peach"),
     ]
-    # RAGHAD fix
+  
     # build all pills in ONE HTML block so they actually stay inside the container
     pills_html = ""
     for name, cls in features:
@@ -880,7 +855,6 @@ def page_home() : #fun draw home page
         st.rerun()
 # ─────────────────────────────────────────────────────────────
 # PAGE 2 — REGISTER : 
-# Banan #Edited by Banan%Ibtihal
 
 def page_register() :
     #Back button
@@ -912,7 +886,7 @@ def page_register() :
     )
     user_age = st.number_input(
         "Age",
-        min_value=18,
+        min_value=1,
         max_value=120,
         step=1
     )
@@ -951,7 +925,6 @@ def page_register() :
         # If everything is valid
         else:
 # ─────────────────────────────────────────────────────────────
-# Raghad Edited this
 
             # ───────── Save to database.json first ─────────
             db = load_db()
@@ -999,7 +972,6 @@ def page_register() :
             st.rerun()
 # ─────────────────────────────────────────────────────────────
 # PAGE 3 — LOGIN :
-# Raghad
 
 def page_login():
 
@@ -1075,7 +1047,6 @@ def page_login():
         st.rerun()
 # ─────────────────────────────────────────────────────────────
 # PAGE 4 — DASHBOARD :
-#Ibtihal , leen edited 
 
 def page_dashboard() : #Displays the dashboard page
 
@@ -1152,8 +1123,6 @@ def page_dashboard() : #Displays the dashboard page
         st.rerun()
 # ─────────────────────────────────────────────────────────────
 # PAGE 5 — ADD / EDIT DAY
-#  #Leen, Edited by Banan+Ibtihal
-
 
 def page_add_day():
     edit_index = st.session_state.get("edit_index")
@@ -1299,8 +1268,7 @@ def page_add_day():
         st.session_state.entries    = entries
         # ─────────────────────────────────────────
         # Save entries permanently to database.json
-        # Raghad
-
+       
         db = load_db()
 
         # Current logged in user email (used as key)
@@ -1323,7 +1291,7 @@ def page_add_day():
 
 # ─────────────────────────────────────────────────────────────
 # PAGE 6 — TRACK (result page) :
-#Leen #Edited by Banan%Ibtihal
+
 def page_track():
     user = st.session_state.user
     entries_raw = st.session_state.entries
@@ -1381,164 +1349,9 @@ def page_track():
     if st.button("Back to dashboard", use_container_width=True, type="primary"):
         st.session_state.page = "dashboard"
         st.rerun()
-
-# ─────────────────────────────────────────────────────────────
-# RAGHAD added
-# PAGE 7 — TODAY RESULTS
-# Browsing without selectbox
-# Chart + text side by side
-
-def page_results_today() -> None:
-    user: dict = st.session_state.user
-    entries_raw: list = st.session_state.entries
-
-    if st.button("Back", type="secondary"):
-        st.session_state.page = "dashboard"
-        st.rerun()
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="page-title">Today results</div>', unsafe_allow_html=True)
-    st.markdown(
-        '<p class="body-muted" style="margin-bottom:0.5rem">'
-        "Browse days with Next and Previous.</p>",
-        unsafe_allow_html=True,
-    )
-
-    if not entries_raw:
-        st.info("No data to display. Add a day first.")
-        return
-
-    entries: list = sort_entries_by_date(entries_raw)
-
-    # RAGHAD added
-    # keep index inside range
-    if st.session_state.result_index < 0:
-        st.session_state.result_index = 0
-    if st.session_state.result_index > len(entries) - 1:
-        st.session_state.result_index = len(entries) - 1
-
-    nav_prev, nav_mid, nav_next = st.columns([1, 1.3, 1])
-    with nav_prev:
-        if st.button("Previous", use_container_width=True, disabled=(st.session_state.result_index == 0)):
-            st.session_state.result_index -= 1
-            st.rerun()
-    with nav_mid:
-        st.markdown(
-            f'<p class="label-sm" style="text-align:center;margin-top:0.6rem">'
-            f'{entries[st.session_state.result_index]["date"]}'
-            f"</p>",
-            unsafe_allow_html=True,
-        )
-    with nav_next:
-        if st.button("Next", use_container_width=True, disabled=(st.session_state.result_index == len(entries) - 1)):
-            st.session_state.result_index += 1
-            st.rerun()
-
-    st.markdown('<hr class="thin-rule">', unsafe_allow_html=True)
-
-    e: dict = entries[st.session_state.result_index]
-
-    # RAGHAD added
-    # single point chart using bar so it fits as a daily result
-    metrics: list = [
-        ("sleep", "Sleep", e["sleep"], PASTEL_COLORS[1], "Hours"),
-        ("water", "Water", e["water"], PASTEL_COLORS[2], "Cups"),
-        ("study", "Study", e["study"], PASTEL_COLORS[0], "Hours"),
-        ("steps", "Steps", e["steps"], PASTEL_COLORS[4], "Steps"),
-        ("mood",  "Mood",  e["mood"],  PASTEL_COLORS[3], "Score"),
-        ("hobby", "Hobby", e["hobby"], PASTEL_COLORS[5], "Hours"),
-    ]
-
-    for metric_key, label, value, color, unit in metrics:
-        fig = go.Figure()
-        fig.add_trace(go.Bar(
-            x=[label],
-            y=[value],
-            marker_color=color,
-        ))
-        fig.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-            font=dict(color="#5a5550", family="DM Sans", size=11),
-            margin=dict(l=0, r=0, t=10, b=0),
-            height=220,
-            yaxis=dict(title=unit, gridcolor="#D9D4CB", zeroline=False),
-            xaxis=dict(gridcolor="#D9D4CB", zeroline=False),
-        )
-
-        comment_text: str = generate_comment(metric_key, float(value), user)
-
-        st.markdown('<hr class="thin-rule">', unsafe_allow_html=True)
-        render_metric_side_by_side(label, fig, comment_text)
-
-    st.markdown('<hr class="thin-rule">', unsafe_allow_html=True)
-    st.markdown('<p class="label-sm">Overall</p>', unsafe_allow_html=True)
-
-    overall_text: str = generate_overall_summary([e], user)
-    st.markdown(
-        f'<div class="comment-block" style="border-left-color:#89B4CC">{overall_text}</div>',
-        unsafe_allow_html=True,
-    )
-
-
-# ─────────────────────────────────────────────────────────────
-# RAGHAD added
-# PAGE 8 — WEEKLY RESULTS       #Edited by Banan%Ibtihal
-# last 7 entries line charts + comment beside chart
-
-def page_results_week() -> None:
-    user: dict = st.session_state.user
-    entries_raw: list = st.session_state.entries
-
-    if st.button("Back", type="secondary"):
-        st.session_state.page = "dashboard"
-        st.rerun()
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown('<div class="page-title">Weekly results</div>', unsafe_allow_html=True)
-    st.markdown(
-        '<p class="body-muted" style="margin-bottom:0.5rem">'
-        "Shows the latest 7 logged days.</p>",
-        unsafe_allow_html=True,
-    )
-
-    if not entries_raw:
-        st.info("No data to display. Add a day first.")
-        return
-
-    entries_sorted: list = sort_entries_by_date(entries_raw)
-    week_entries: list = entries_sorted[-7:]
-
-    dates: list = [e["date"] for e in week_entries]
-
-    metrics: list = [
-        ("sleep", "Sleep", [e["sleep"] for e in week_entries], PASTEL_COLORS[1], "Hours"),
-        ("water", "Water", [e["water"] for e in week_entries], PASTEL_COLORS[2], "Cups"),
-        ("study", "Study", [e["study"] for e in week_entries], PASTEL_COLORS[0], "Hours"),
-        ("steps", "Steps", [e["steps"] for e in week_entries], PASTEL_COLORS[4], "Steps"),
-        ("mood",  "Mood",  [e["mood"]  for e in week_entries], PASTEL_COLORS[3], "Score"),
-        ("hobby", "Hobby", [e["hobby"] for e in week_entries], PASTEL_COLORS[5], "Hours"),
-    ]
-
-    for metric_key, label, vals, color, unit in metrics:
-        avg_val: float = get_avg(vals)
-        fig: go.Figure = make_chart(dates, vals, color, unit)
-        comment_text: str = generate_comment(metric_key, avg_val, user)
-
-        st.markdown('<hr class="thin-rule">', unsafe_allow_html=True)
-        render_metric_side_by_side(label, fig, comment_text)
-
-    st.markdown('<hr class="thin-rule">', unsafe_allow_html=True)
-    st.markdown('<p class="label-sm">Overall summary</p>', unsafe_allow_html=True)
-
-    summary: str = generate_overall_summary(week_entries, user)
-    st.markdown(
-        f'<div class="comment-block" style="border-left-color:#89B4CC">{summary}</div>',
-        unsafe_allow_html=True,
-    )
-    
 # ─────────────────────────────────────────────────────────────
 # Router :
-# Edited by Raghad
+
 apply_styles()
 
 _page: str        = st.session_state.page
@@ -1558,3 +1371,5 @@ elif _page == "track":     page_track()
 else:
     st.session_state.page = "home"
     st.rerun()
+
+
