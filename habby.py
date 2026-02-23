@@ -70,7 +70,6 @@ def init_session() : #function creates default values for the session,So every u
         "entries":    [],       # list > list of daily log entries
         "edit_index": None,     # int  > index of entry being edited
 
-        # RAGHAD added
         "result_index": 0,      # int > used for browsing results without selectbox
     }
     #It iterates through each element in the dictionary, checks if the variable already exists, and places it in session_state.
@@ -1371,5 +1370,6 @@ elif _page == "track":     page_track()
 else:
     st.session_state.page = "home"
     st.rerun()
+
 
 
